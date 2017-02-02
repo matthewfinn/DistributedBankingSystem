@@ -29,32 +29,7 @@ public class Bank extends UnicastRemoteObject implements IBank {
 	{
 
 	}
-	public void deposit(int account, int amount) throws RemoteException/*,  InvalidSession*/ {
-
-		// implementation code
-
-	}
-
-	public void withdraw(int account, int amount) throws RemoteException/*, InvalidSession*/ {
-
-		// implementation code
-
-	}
-
-	public int inquiry(int account) throws RemoteException/*, InvalidSession*/ {
-		return account;
-
-		// implementation code
-
-	}
-
-	public Statement getStatement(Date from, Date to) throws RemoteException/*, InvalidSession*/ {
-		return null;
-
-		// implementation code
-
-	}
-
+	
 	public static void main(String args[]) throws Exception {
 
 		// initialise Bank server - see sample code in the notes for details
@@ -68,12 +43,12 @@ public class Bank extends UnicastRemoteObject implements IBank {
 	@Override
 	public void deposit(int accountnum, int amount, long sessionID) throws RemoteException, InvalidSession {
 		// TODO Auto-generated method stub
-
+		
 	}
 	@Override
 	public void withdraw(int accountnum, int amount, long sessionID) throws RemoteException, InvalidSession {
 		// TODO Auto-generated method stub
-
+		
 	}
 	@Override
 	public int inquiry(int accountnum, long sessionID) throws RemoteException, InvalidSession {
@@ -85,6 +60,7 @@ public class Bank extends UnicastRemoteObject implements IBank {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
 
 
 }

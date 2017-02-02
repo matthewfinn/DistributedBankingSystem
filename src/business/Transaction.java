@@ -24,9 +24,11 @@ public class Transaction implements Serializable{
 	private Date date;
 
 
-	public Transaction (String t, double amt, Date dt){
-
-
+	public Transaction (String t, double amt, Date dt)
+	{
+		this.type = t;
+		this.amount = amt;
+		this.date =dt;
 	}
 
 	@Override
