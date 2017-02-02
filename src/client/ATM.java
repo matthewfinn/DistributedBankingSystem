@@ -21,14 +21,19 @@ public class ATM
 		switch (args[0]){
 
 		case "login":
+			break;
 
 		case "inquiry":
+			break;
 
 		case "deposit":
+			break;
 
 		case "withdraw":
+			break;
 
 		case "statement":
+			break;
 
 		}
 
