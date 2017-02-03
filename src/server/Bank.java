@@ -13,6 +13,7 @@
 
 package server;
 
+import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Date;
@@ -30,11 +31,22 @@ public class Bank extends UnicastRemoteObject implements IBank {
 
 	}
 	
-	public static void main(String args[]) throws Exception {
-
-		// initialise Bank server - see sample code in the notes for details
+	public static void main(String args[]) throws Exception
+	{
+		try
+		{
+			System.setSecurityManager(new RMISecurityManager());
+			// initialise Bank server - see sample code in the notes for details
+			
+		}
+		catch(Exception e )
+		{
+			System.out.println("Error in Server Main");
+		}
+	
 
 	}
+	
 	@Override
 	public long login(String username, String password) throws RemoteException, InvalidLogin {
 		// TODO Auto-generated method stub
