@@ -24,6 +24,7 @@ public class ATM
 	private static int serverPort;
 	private static IBank bankInterface;
 	private static long sessionID;
+
 	public static void main (String args[]) throws Exception
 	{
 
@@ -49,12 +50,12 @@ public class ATM
 		}
 
 		MenuSwitcher(args);
-		
+
 		// get user�s input, and perform the operations
 
 	}
 
-	
+
 	private static void MenuSwitcher(String args[])
 	{
 		switch (args[2])
@@ -62,7 +63,7 @@ public class ATM
 
 		case "login":
 			//sessionID=bankInterface.login(args[4], args[5])
-			
+
 			break;
 
 		case "inquiry":

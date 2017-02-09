@@ -16,6 +16,7 @@ package server;
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -25,28 +26,44 @@ import interfaces.IBank;
 public class Bank extends UnicastRemoteObject implements IBank {
 
 	private List<Account> accounts; // users accounts
+	private static int serverPort;
 
 	public Bank() throws RemoteException
 	{
+		this.accounts = new ArrayList<Account>();
+
+		/**
+		 * Adding new user accounts to the bank upon construction and Bank (Server) obj.
+		 */
+		this.accounts.add(new Account(1, 100.00));
+		this.accounts.add(new Account(2, 200.00));
+		this.accounts.add(new Account(3, 300.00));
+		this.accounts.add(new Account(4, 400.00));
+		this.accounts.add(new Account(5, 500.00));
 
 	}
-	
+
 	public static void main(String args[]) throws Exception
 	{
+		//Reads in port number parameter from cmd
+		serverPort = Integer.parseInt(args[0]);
+
+		System.setSecurityManager(new RMISecurityManager());
+
+		//Registry registry = LocateRegistry.getRegistry();
+
 		try
 		{
-			System.setSecurityManager(new RMISecurityManager());
-			// initialise Bank server - see sample code in the notes for details
-			
+			Bank bank = new Bank();// initialise Bank server
 		}
 		catch(Exception e )
 		{
-			System.out.println("Error in Server Main");
+			System.out.println("Error Initialising Bank Server");
 		}
-	
+
 
 	}
-	
+
 	@Override
 	public long login(String username, String password) throws RemoteException, InvalidLogin {
 		// TODO Auto-generated method stub
@@ -55,12 +72,12 @@ public class Bank extends UnicastRemoteObject implements IBank {
 	@Override
 	public void deposit(int accountnum, int amount, long sessionID) throws RemoteException, InvalidSession {
 		// TODO Auto-generated method stub
-		
+
 	}
 	@Override
 	public void withdraw(int accountnum, int amount, long sessionID) throws RemoteException, InvalidSession {
 		// TODO Auto-generated method stub
-		
+
 	}
 	@Override
 	public int inquiry(int accountnum, long sessionID) throws RemoteException, InvalidSession {
@@ -72,7 +89,7 @@ public class Bank extends UnicastRemoteObject implements IBank {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 
 
 }
