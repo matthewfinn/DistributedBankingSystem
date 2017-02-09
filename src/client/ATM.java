@@ -24,7 +24,6 @@ public class ATM
 	private static int serverPort;
 	private static IBank bankInterface;
 	private static long sessionID;
-
 	public static void main (String args[]) throws Exception
 	{
 
@@ -67,6 +66,7 @@ public class ATM
 			break;
 
 		case "inquiry":
+
 			//bankInterface.inquiry(args[3], sessionID)
 			break;
 
