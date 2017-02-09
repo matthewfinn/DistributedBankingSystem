@@ -12,10 +12,12 @@
  */
 //howya
 package client;
+import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 import interfaces.IBank;
+import interfaces.IBank.InvalidSession;
 
 public class ATM
 {
@@ -33,12 +35,10 @@ public class ATM
 		serverAddress = args[0];
 		serverPort = Integer.parseInt(args[1]);
 
-
 		try
 		{
-
 			Registry registry = LocateRegistry.getRegistry(serverAddress, serverPort);
-
+			IBank bankInterface = (IBank) registry.lookup("IBank");
 
 		}catch(Exception e)
 		{
@@ -49,13 +49,10 @@ public class ATM
 		}
 
 		MenuSwitcher(args);
-
-		// get user�s input, and perform the operations
-
 	}
 
 
-	private static void MenuSwitcher(String args[])
+	private static void MenuSwitcher(String args[]) throws NumberFormatException, RemoteException, InvalidSession
 	{
 		switch (args[2])
 		{
@@ -66,16 +63,15 @@ public class ATM
 			break;
 
 		case "inquiry":
-
-			//bankInterface.inquiry(args[3], sessionID)
+			bankInterface.inquiry(Integer.parseInt(args[3]), sessionID);
 			break;
 
 		case "deposit":
-			//bankInterface.deposit(args[3], args[6], sessionID);
+			bankInterface.deposit(Integer.parseInt(args[3]), Integer.parseInt(args[4]), sessionID);
 			break;
 
 		case "withdraw":
-			//bankInterface.withdraw(args[3], args[6], sessionID);
+			bankInterface.withdraw(Integer.parseInt(args[3]), Integer.parseInt(args[4]), sessionID);
 			break;
 
 		case "statement":

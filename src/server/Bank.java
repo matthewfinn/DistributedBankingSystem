@@ -15,6 +15,8 @@ package server;
 
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,7 +33,6 @@ public class Bank extends UnicastRemoteObject implements IBank {
 	public Bank() throws RemoteException
 	{
 		this.accounts = new ArrayList<Account>();
-
 		/**
 		 * Adding new user accounts to the bank upon construction and Bank (Server) obj.
 		 */
@@ -47,14 +48,14 @@ public class Bank extends UnicastRemoteObject implements IBank {
 	{
 		//Reads in port number parameter from cmd
 		serverPort = Integer.parseInt(args[0]);
-
-		System.setSecurityManager(new RMISecurityManager());
-
-		//Registry registry = LocateRegistry.getRegistry();
-
 		try
 		{
 			Bank bank = new Bank();// initialise Bank server
+			IBank bankIF = (IBank) UnicastRemoteObject.exportObject(bank, 0);
+			Registry registry = LocateRegistry.getRegistry(serverPort);
+			registry.bind("IBank", bankIF);
+			System.setSecurityManager(new RMISecurityManager());
+			System.out.println("Server ready");
 		}
 		catch(Exception e )
 		{
