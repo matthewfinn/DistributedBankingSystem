@@ -61,15 +61,16 @@ public class Bank extends UnicastRemoteObject implements IBank {
 		try
 		{
 			Bank bank = new Bank();// initialise Bank server
-			IBank bankIF = (IBank) UnicastRemoteObject.exportObject(bank, 0);
+			//IBank bankIF = (IBank) UnicastRemoteObject.exportObject(bank, 0);
 			Registry registry = LocateRegistry.getRegistry(serverPort);
-			registry.bind("IBank", bankIF);
+			registry.bind("Bank", bank);
 			System.setSecurityManager(new RMISecurityManager());
 			System.out.println("Server ready");
 		}
 		catch(Exception e )
 		{
-			System.out.println("Error Initialising Bank Server");
+			System.out.println("Error Initialising Bank Server:" +e.getMessage());
+			e.printStackTrace();
 		}
 	}
 
@@ -77,9 +78,9 @@ public class Bank extends UnicastRemoteObject implements IBank {
 
 	@Override
 	public long login(String username, String password) throws RemoteException, InvalidLogin {
-		 
+
 		long sesID=0;
-		
+
 		if(userDetails.containsKey(username))
 		{
 			if(userDetails.containsValue(password))
@@ -90,12 +91,12 @@ public class Bank extends UnicastRemoteObject implements IBank {
 
 
 				sesID = min + (long)(random.nextDouble()*(max - min));
-				
+
 			}
 		}
 		return sesID;
 	}
-	
+
 	@Override
 	public void deposit(int accnum, int amount, long sessionID) throws RemoteException, InvalidSession {
 
@@ -154,7 +155,7 @@ public class Bank extends UnicastRemoteObject implements IBank {
 			if(a.getAccountNum() == accnum){
 
 				acc = a;
-				System.out.println("Balance for account number"+acc.getAccountNum()+" is €"+acc.getBalance());
+				System.out.println("Balance for account number" + acc.getAccountNum()+" is €"+acc.getBalance());
 				break;
 			}
 		}
@@ -171,7 +172,7 @@ public class Bank extends UnicastRemoteObject implements IBank {
 			if(a.getAccountNum() == accnum)
 			{
 				s = new Statement(a,from,to);
-				
+
 				for(Transaction t :s.getTransactionsForPeriod(from, to))
 				{
 					System.out.println(t.toString());

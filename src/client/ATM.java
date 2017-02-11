@@ -12,7 +12,6 @@
  */
 //howya
 package client;
-import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -44,8 +43,8 @@ public class ATM
 		try
 		{
 			Registry registry = LocateRegistry.getRegistry(serverAddress, serverPort);
-			IBank bankInterface = (IBank) registry.lookup("IBank");
-			Naming.rebind("BankInterface", bankInterface); 
+			IBank bankInterface = (IBank) registry.lookup("Bank");
+			//Naming.rebind("Bank", bankInterface);
 
 		}catch(Exception e)
 		{
