@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.List;
 
 import business.Account;
+import business.Transaction;
 import interfaces.IBank;
 
 public class Bank extends UnicastRemoteObject implements IBank {
@@ -72,6 +73,19 @@ public class Bank extends UnicastRemoteObject implements IBank {
 	}
 	@Override
 	public void deposit(int accountnum, int amount, long sessionID) throws RemoteException, InvalidSession {
+
+		Account acc;
+		int i = 0;
+		if(accounts.get(i).getAccountNum() == accountnum){
+			acc = accounts.get(i);
+
+			Transaction dep = new Transaction("deposit", amount, new Date());
+			acc.addTransaction(dep);
+
+		}else{
+
+			i++;
+		}
 		// TODO Auto-generated method stub
 
 	}

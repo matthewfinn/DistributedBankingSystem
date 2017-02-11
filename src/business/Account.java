@@ -29,9 +29,6 @@ public class Account
 		this.accountNum = acm;
 		this.balance = bal;
 		this.transactions = new ArrayList<Transaction>();
-
-
-
 	}
 
 
