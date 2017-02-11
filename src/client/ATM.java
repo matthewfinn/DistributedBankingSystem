@@ -44,6 +44,7 @@ public class ATM
 		{
 			Registry registry = LocateRegistry.getRegistry(serverAddress, serverPort);
 			bankInterface = (IBank) registry.lookup("Bank");
+			MenuSwitcher(args);
 			//Naming.rebind("IBank", bankInterface);
 
 		}catch(Exception e)
@@ -53,10 +54,11 @@ public class ATM
 			e.printStackTrace();
 		}
 
-		for (int i=0; i < args.length; i++){
-			System.out.println(args[i].toString());
-		}
-		MenuSwitcher(args);
+		//		for (int i=0; i < args.length; i++){
+		//			System.out.println(args[i].toString());
+		//		}
+
+
 	}
 
 
@@ -77,7 +79,6 @@ public class ATM
 
 		case "deposit":
 
-			//NPE BEING THROWN HERE
 			bankInterface.deposit(Integer.parseInt(args[3]), Integer.parseInt(args[4]), sessionID);
 			break;
 

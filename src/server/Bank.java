@@ -13,7 +13,6 @@
 
 package server;
 
-import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -61,10 +60,9 @@ public class Bank extends UnicastRemoteObject implements IBank {
 		try
 		{
 			Bank bank = new Bank();// initialise Bank server
-			//IBank bankIF = (IBank) UnicastRemoteObject.exportObject(bank, 0);
 			Registry registry = LocateRegistry.getRegistry(serverPort);
 			registry.bind("Bank", bank);
-			System.setSecurityManager(new RMISecurityManager());
+			//System.setSecurityManager(new RMISecurityManager());
 			System.out.println("Server ready");
 		}
 		catch(Exception e )
@@ -101,6 +99,7 @@ public class Bank extends UnicastRemoteObject implements IBank {
 	public void deposit(int accnum, int amount, long sessionID) throws RemoteException, InvalidSession {
 
 		Account acc ;
+
 		for(Account a : accounts){
 
 			if(a.getAccountNum() == accnum){
@@ -114,6 +113,7 @@ public class Bank extends UnicastRemoteObject implements IBank {
 				Transaction dep = new Transaction(TransactionType.Deposit, amount, todayDate);
 				acc.setBalance(acc.getBalance()+amount);
 				acc.addTransaction(dep);
+				System.out.println(dep.toString());
 				break;
 			}
 
