@@ -12,6 +12,7 @@
  */
 //howya
 package client;
+import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -21,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import interfaces.IBank;
+import interfaces.IBank.InvalidLogin;
 import interfaces.IBank.InvalidSession;
 
 public class ATM
@@ -43,26 +45,26 @@ public class ATM
 		{
 			Registry registry = LocateRegistry.getRegistry(serverAddress, serverPort);
 			IBank bankInterface = (IBank) registry.lookup("IBank");
+			Naming.rebind("BankInterface", bankInterface); 
 
 		}catch(Exception e)
 		{
 
 			System.err.println("Client exception: " + e.toString());
 			e.printStackTrace();
-
 		}
 
 		MenuSwitcher(args);
 	}
 
 
-	private static void MenuSwitcher(String args[]) throws NumberFormatException, RemoteException, InvalidSession, ParseException
+	private static void MenuSwitcher(String args[]) throws NumberFormatException, RemoteException, InvalidSession, ParseException, InvalidLogin
 	{
-		switch (args[2])
+		switch (args[2].toLowerCase())
 		{
 
 		case "login":
-			//sessionID=bankInterface.login(args[4], args[5])
+			sessionID=bankInterface.login(args[3], args[4]);
 
 			break;
 

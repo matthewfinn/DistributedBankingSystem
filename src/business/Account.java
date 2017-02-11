@@ -21,13 +21,16 @@ public class Account
 
 	private int accountNum;
 	private double balance;
+	private String accountName;
 	private List<Transaction> transactions;
 
 
-	public Account(int acm, double bal){
+	public Account(int acm, double bal,String accName)
+	{
 
 		this.accountNum = acm;
 		this.balance = bal;
+		this.accountName = accName;
 		this.transactions = new ArrayList<Transaction>();
 	}
 
@@ -39,6 +42,10 @@ public class Account
 
 	public double getBalance() {
 		return balance;
+	}
+	
+	public String getAccountName() {
+		return accountName;
 	}
 
 
@@ -59,6 +66,9 @@ public class Account
 		this.accountNum = accountNum;
 	}
 
+	public void setAccountName(String accountName) {
+		this.accountName = accountName;
+	}
 
 	public void setBalance(double balance) {
 		this.balance = balance;

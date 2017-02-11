@@ -13,40 +13,74 @@
 
 package server;
 
-import java.awt.List;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Date;
+import business.Transaction;
 
+import business.Account;
 import interfaces.IStatement;
+
 public class Statement implements IStatement {
 
+	private Account account;
+	private Date startDate;
+	private Date endDate;
+	
+	
+	public Statement(Account acc, Date from, Date to)
+	{
+		this.account = acc;
+		this.startDate =from;
+		this.endDate =to;
+	}
+	
+	
 	@Override
 	public int getAccountnum() {
 		// TODO Auto-generated method stub
-		return 0;
+		return account.getAccountNum();
 	}
 
 	@Override
 	public Date getStartDate() {
 		// TODO Auto-generated method stub
-		return null;
+		return this.startDate;
 	}
 
 	@Override
 	public Date getEndDate() {
 		// TODO Auto-generated method stub
-		return null;
+		
+		return this.endDate;
 	}
 
 	@Override
 	public String getAccoutName() {
 		// TODO Auto-generated method stub
-		return null;
+		return account.getAccountName();
 	}
 
 	@Override
-	public List getTransations() {
+	public List<Transaction> getTransactions() {
 		// TODO Auto-generated method stub
-		return null;
+		return account.getTransactions();
+	}
+	
+	@Override
+	public List<Transaction> getTransactionsForPeriod(Date from, Date to)
+	{
+		List<Transaction> transactionsForPeriod= new ArrayList<Transaction>();
+		
+		for (Transaction t: this.getTransactions())
+		{
+
+			if(t.getDate().after(from)&& t.getDate().before(to))
+			{
+				transactionsForPeriod.add(t);
+			}
+		}
+		return transactionsForPeriod;
 	}
 
 }

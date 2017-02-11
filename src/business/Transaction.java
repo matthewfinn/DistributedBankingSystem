@@ -19,12 +19,17 @@ import java.util.Date;
 public class Transaction implements Serializable{
 
 	private static final long serialVersionUID = 223815498914869520L;
-	private String type;
+	private TransactionType type;
 	private double amount;
 	private Date date;
 
-
-	public Transaction (String t, double amt, Date dt)
+	public enum TransactionType
+	{
+		Deposit,
+		Withdrawal
+	}
+	
+	public Transaction (TransactionType t, double amt, Date dt)
 	{
 		this.type = t;
 		this.amount = amt;
@@ -37,7 +42,7 @@ public class Transaction implements Serializable{
 
 	}
 
-	public String getType() {
+	public TransactionType getType() {
 		return type;
 	}
 
@@ -49,7 +54,7 @@ public class Transaction implements Serializable{
 		return date;
 	}
 
-	public void setType(String type) {
+	public void setType(TransactionType type) {
 		this.type = type;
 	}
 

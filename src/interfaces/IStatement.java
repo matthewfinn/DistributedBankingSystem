@@ -13,7 +13,8 @@
 
 package interfaces;
 
-import java.awt.List;
+import business.Transaction;
+import java.util.List;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -27,6 +28,9 @@ public interface IStatement  extends Serializable {
 
 	public String getAccoutName(); // returns name of account holder
 
-	public List  getTransations(); // returns list of Transaction objects that encapsulate details about each transaction
+	public List<Transaction> getTransactions(); // returns list of Transaction objects that encapsulate details about each transaction
+
+	public List<Transaction> getTransactionsForPeriod(Date from, Date to);
 
 }
+

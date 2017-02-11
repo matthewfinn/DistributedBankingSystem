@@ -21,28 +21,36 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 import business.Account;
 import business.Transaction;
+import business.Transaction.TransactionType;
 import interfaces.IBank;
+
 
 public class Bank extends UnicastRemoteObject implements IBank {
 
 	private List<Account> accounts; // users accounts
+	private Map<String,String> userDetails;
 	private static int serverPort;
 
 	public Bank() throws RemoteException
 	{
+		userDetails= new HashMap<String, String>();
 		this.accounts = new ArrayList<Account>();
 		/**
 		 * Adding new user accounts to the bank upon construction and Bank (Server) obj.
 		 */
-		this.accounts.add(new Account(1, 100.00));
-		this.accounts.add(new Account(2, 200.00));
-		this.accounts.add(new Account(3, 300.00));
-		this.accounts.add(new Account(4, 400.00));
-		this.accounts.add(new Account(5, 500.00));
+		this.accounts.add(new Account(1, 100.00,"Matthew"));
+		this.accounts.add(new Account(2, 200.00,"Shane"));
+		this.accounts.add(new Account(3, 300.00,"Mark"));
+		this.accounts.add(new Account(4, 400.00,"Luke"));
+		this.accounts.add(new Account(5, 500.00,"Joe"));
+		userDetails.put("username", "password");
 
 	}
 
@@ -69,9 +77,25 @@ public class Bank extends UnicastRemoteObject implements IBank {
 
 	@Override
 	public long login(String username, String password) throws RemoteException, InvalidLogin {
-		// TODO Auto-generated method stub
-		return 0;
+		 
+		long sesID=0;
+		
+		if(userDetails.containsKey(username))
+		{
+			if(userDetails.containsValue(password))
+			{
+				long min = 0; //assign lower range value
+				long max = 1000000; //assign upper range value
+				Random random = new Random();
+
+
+				sesID = min + (long)(random.nextDouble()*(max - min));
+				
+			}
+		}
+		return sesID;
 	}
+	
 	@Override
 	public void deposit(int accnum, int amount, long sessionID) throws RemoteException, InvalidSession {
 
@@ -86,7 +110,7 @@ public class Bank extends UnicastRemoteObject implements IBank {
 				today.clear(Calendar.HOUR); today.clear(Calendar.MINUTE); today.clear(Calendar.SECOND);
 				Date todayDate = today.getTime();
 
-				Transaction dep = new Transaction("deposit", amount, todayDate);
+				Transaction dep = new Transaction(TransactionType.Deposit, amount, todayDate);
 				acc.setBalance(acc.getBalance()+amount);
 				acc.addTransaction(dep);
 				break;
@@ -113,7 +137,7 @@ public class Bank extends UnicastRemoteObject implements IBank {
 				Date todayDate = today.getTime();
 
 
-				Transaction wit = new Transaction("withdrawal", amount, todayDate);
+				Transaction wit = new Transaction(TransactionType.Withdrawal, amount, todayDate);
 				acc.setBalance(acc.getBalance()-amount);
 				acc.addTransaction(wit);
 				break;
@@ -139,26 +163,21 @@ public class Bank extends UnicastRemoteObject implements IBank {
 	}
 	@Override
 	public Statement getStatement(int accnum, Date from, Date to, long sessionID) throws RemoteException, InvalidSession {
-		Account acc;
-		List<Transaction> trs;
 
-		for(Account a : accounts){
+		Statement s=null;
 
-			if(a.getAccountNum() == accnum){
-
-				acc = a;
-				trs = acc.getTransactions();
-
-				for (Transaction t: trs){
-
-					if(t.getDate().after(from)&& t.getDate().before(to)){
-						t.toString();
-					}
+		for(Account a : accounts)
+		{
+			if(a.getAccountNum() == accnum)
+			{
+				s = new Statement(a,from,to);
+				
+				for(Transaction t :s.getTransactionsForPeriod(from, to))
+				{
+					System.out.println(t.toString());
 				}
-				break;
 			}
-
 		}
-		return null;
+		return s;
 	}
 }
