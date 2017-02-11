@@ -13,6 +13,8 @@
 
 package server;
 
+import java.net.URL;
+import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -61,7 +63,7 @@ public class Bank extends UnicastRemoteObject implements IBank {
 		{
 			Bank bank = new Bank();// initialise Bank server
 			Registry registry = LocateRegistry.getRegistry(serverPort);
-			registry.bind("Bank", bank);
+			registry.bind("Bank", bank);		
 			System.out.println("Server ready");
 		}
 		catch(Exception e )
