@@ -43,8 +43,8 @@ public class ATM
 		try
 		{
 			Registry registry = LocateRegistry.getRegistry(serverAddress, serverPort);
-			IBank bankInterface = (IBank) registry.lookup("Bank");
-			//Naming.rebind("Bank", bankInterface);
+			bankInterface = (IBank) registry.lookup("Bank");
+			//Naming.rebind("IBank", bankInterface);
 
 		}catch(Exception e)
 		{
@@ -53,6 +53,9 @@ public class ATM
 			e.printStackTrace();
 		}
 
+		for (int i=0; i < args.length; i++){
+			System.out.println(args[i].toString());
+		}
 		MenuSwitcher(args);
 	}
 
@@ -63,6 +66,7 @@ public class ATM
 		{
 
 		case "login":
+
 			sessionID=bankInterface.login(args[3], args[4]);
 
 			break;
@@ -72,6 +76,8 @@ public class ATM
 			break;
 
 		case "deposit":
+
+			//NPE BEING THROWN HERE
 			bankInterface.deposit(Integer.parseInt(args[3]), Integer.parseInt(args[4]), sessionID);
 			break;
 
@@ -89,5 +95,8 @@ public class ATM
 			break;
 
 		}
+
+
+
 	}
 }

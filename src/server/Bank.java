@@ -119,8 +119,6 @@ public class Bank extends UnicastRemoteObject implements IBank {
 
 		}
 
-
-
 	}
 	@Override
 	public void withdraw(int accnum, int amount, long sessionID) throws RemoteException, InvalidSession {
