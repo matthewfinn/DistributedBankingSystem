@@ -19,6 +19,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -62,9 +63,9 @@ public class Bank extends UnicastRemoteObject implements IBank {
 		{
 			System.out.println("Error Initialising Bank Server");
 		}
-
-
 	}
+
+
 
 	@Override
 	public long login(String username, String password) throws RemoteException, InvalidLogin {
@@ -72,39 +73,92 @@ public class Bank extends UnicastRemoteObject implements IBank {
 		return 0;
 	}
 	@Override
-	public void deposit(int accountnum, int amount, long sessionID) throws RemoteException, InvalidSession {
+	public void deposit(int accnum, int amount, long sessionID) throws RemoteException, InvalidSession {
 
-		Account acc;
-		int i = 0;
-		if(accounts.get(i).getAccountNum() == accountnum){
-			acc = accounts.get(i);
+		Account acc ;
+		for(Account a : accounts){
 
-			Transaction dep = new Transaction("deposit", amount, new Date());
-			acc.addTransaction(dep);
+			if(a.getAccountNum() == accnum){
 
-		}else{
+				acc = a;
 
-			i++;
+				Calendar today = Calendar.getInstance();
+				today.clear(Calendar.HOUR); today.clear(Calendar.MINUTE); today.clear(Calendar.SECOND);
+				Date todayDate = today.getTime();
+
+				Transaction dep = new Transaction("deposit", amount, todayDate);
+				acc.setBalance(acc.getBalance()+amount);
+				acc.addTransaction(dep);
+				break;
+			}
+
 		}
-		// TODO Auto-generated method stub
+
+
 
 	}
 	@Override
-	public void withdraw(int accountnum, int amount, long sessionID) throws RemoteException, InvalidSession {
-		// TODO Auto-generated method stub
+	public void withdraw(int accnum, int amount, long sessionID) throws RemoteException, InvalidSession {
+		Account acc;
+
+		for(Account a : accounts){
+
+			if(a.getAccountNum() == accnum){
+
+				acc = a;
+
+				//Gets todays date
+				Calendar today = Calendar.getInstance();
+				today.clear(Calendar.HOUR); today.clear(Calendar.MINUTE); today.clear(Calendar.SECOND);
+				Date todayDate = today.getTime();
+
+
+				Transaction wit = new Transaction("withdrawal", amount, todayDate);
+				acc.setBalance(acc.getBalance()-amount);
+				acc.addTransaction(wit);
+				break;
+			}
+		}
 
 	}
 	@Override
-	public int inquiry(int accountnum, long sessionID) throws RemoteException, InvalidSession {
-		// TODO Auto-generated method stub
+	public int inquiry(int accnum, long sessionID) throws RemoteException, InvalidSession {
+		Account acc;
+
+		for(Account a : accounts){
+
+			if(a.getAccountNum() == accnum){
+
+				acc = a;
+				System.out.println("Balance for account number"+acc.getAccountNum()+" is €"+acc.getBalance());
+				break;
+			}
+		}
+
 		return 0;
 	}
 	@Override
-	public Statement getStatement(Date from, Date to, long sessionID) throws RemoteException, InvalidSession {
-		// TODO Auto-generated method stub
+	public Statement getStatement(int accnum, Date from, Date to, long sessionID) throws RemoteException, InvalidSession {
+		Account acc;
+		List<Transaction> trs;
+
+		for(Account a : accounts){
+
+			if(a.getAccountNum() == accnum){
+
+				acc = a;
+				trs = acc.getTransactions();
+
+				for (Transaction t: trs){
+
+					if(t.getDate().after(from)&& t.getDate().before(to)){
+						t.toString();
+					}
+				}
+				break;
+			}
+
+		}
 		return null;
 	}
-
-
-
 }

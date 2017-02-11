@@ -33,7 +33,7 @@ public class Transaction implements Serializable{
 
 	@Override
 	public String toString(){
-		return this.type + this.amount + this.date;
+		return "Transaction: "+ this.type + this.amount + this.date;
 
 	}
 

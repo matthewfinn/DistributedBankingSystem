@@ -15,6 +15,10 @@ package client;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import interfaces.IBank;
 import interfaces.IBank.InvalidSession;
@@ -52,7 +56,7 @@ public class ATM
 	}
 
 
-	private static void MenuSwitcher(String args[]) throws NumberFormatException, RemoteException, InvalidSession
+	private static void MenuSwitcher(String args[]) throws NumberFormatException, RemoteException, InvalidSession, ParseException
 	{
 		switch (args[2])
 		{
@@ -75,7 +79,12 @@ public class ATM
 			break;
 
 		case "statement":
-			//bankInterface.getStatement(from, to, sessionID)
+
+			DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+			Date from = dateFormat.parse(args[4]);
+			Date to = dateFormat.parse(args[5]);
+
+			bankInterface.getStatement(Integer.parseInt(args[3]), from, to, sessionID);
 			break;
 
 		}
