@@ -62,7 +62,6 @@ public class Bank extends UnicastRemoteObject implements IBank {
 			Bank bank = new Bank();// initialise Bank server
 			Registry registry = LocateRegistry.getRegistry(serverPort);
 			registry.bind("Bank", bank);
-			//System.setSecurityManager(new RMISecurityManager());
 			System.out.println("Server ready");
 		}
 		catch(Exception e )

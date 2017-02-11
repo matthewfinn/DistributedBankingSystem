@@ -70,7 +70,6 @@ public class ATM
 		case "login":
 
 			sessionID=bankInterface.login(args[3], args[4]);
-
 			break;
 
 		case "inquiry":
