@@ -47,7 +47,9 @@ public class ATM
 		{
 			Registry registry = LocateRegistry.getRegistry(serverAddress, serverPort);
 			bankInterface = (IBank) registry.lookup("Bank");
-			MenuSwitcher(args);
+			while(true){
+				MenuSwitcher(args);
+			}
 			//Naming.rebind("IBank", bankInterface);
 
 		}catch(Exception e)
@@ -72,11 +74,11 @@ public class ATM
 
 		case "login":
 			sessionID=bankInterface.login(args[3], args[4]);
-			
+
 			if(sessionID != 0)
 			{
 				sessionTimer = new Timer();
-				
+
 				sessionTimer.schedule(new TimerTask()
 				{
 					@Override
@@ -85,23 +87,28 @@ public class ATM
 						sessionID =0;
 					}
 				}, 5*60*1000);
+
 			}
 			else
-			{	
+			{
 				throw new InvalidLogin();
+
 			}
-			
+			break;
+
 
 		case "inquiry":
 			if(sessionID !=0)
 			{
 				bankInterface.inquiry(Integer.parseInt(args[3]), sessionID);
+
 			}
 			else
-			{	
+			{
 				throw new InvalidSession();
 			}
-			
+			break;
+
 
 		case "deposit":
 			if(sessionID !=0)
@@ -109,10 +116,11 @@ public class ATM
 				bankInterface.deposit(Integer.parseInt(args[3]), Integer.parseInt(args[4]), sessionID);
 			}
 			else
-			{	
+			{
 				throw new InvalidSession();
 			}
-			
+			break;
+
 
 		case "withdraw":
 			if(sessionID !=0)
@@ -120,10 +128,11 @@ public class ATM
 				bankInterface.withdraw(Integer.parseInt(args[3]), Integer.parseInt(args[4]), sessionID);
 			}
 			else
-			{	
+			{
 				throw new InvalidSession();
 			}
-			
+			break;
+
 
 		case "statement":
 
@@ -133,14 +142,16 @@ public class ATM
 				Date from = dateFormat.parse(args[4]);
 				Date to = dateFormat.parse(args[5]);
 
-				bankInterface.getStatement(Integer.parseInt(args[3]), from, to, sessionID);	
+				bankInterface.getStatement(Integer.parseInt(args[3]), from, to, sessionID);
+				MenuSwitcher(args);
 			}
 			else
-			{	
+			{
 				throw new InvalidSession();
 			}
-			
-			
+			break;
+
+
 
 		}
 
