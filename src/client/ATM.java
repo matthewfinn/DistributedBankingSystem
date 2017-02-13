@@ -19,6 +19,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import interfaces.IBank;
 import interfaces.IBank.InvalidLogin;
@@ -31,6 +33,7 @@ public class ATM
 	private static int serverPort;
 	private static IBank bankInterface;
 	private static long sessionID;
+	private static Timer sessionTimer;
 	public static void main (String args[]) throws Exception
 	{
 
@@ -68,30 +71,76 @@ public class ATM
 		{
 
 		case "login":
-
 			sessionID=bankInterface.login(args[3], args[4]);
+			
+			if(sessionID != 0)
+			{
+				sessionTimer = new Timer();
+				
+				sessionTimer.schedule(new TimerTask()
+				{
+					@Override
+					public void run()
+					{
+						sessionID =0;
+					}
+				}, 5*60*1000);
+			}
+			else
+			{	
+				throw new InvalidLogin();
+			}
+			
 			break;
 
 		case "inquiry":
-			bankInterface.inquiry(Integer.parseInt(args[3]), sessionID);
+			if(sessionID !=0)
+			{
+				bankInterface.inquiry(Integer.parseInt(args[3]), sessionID);
+			}
+			else
+			{	
+				throw new InvalidSession();
+			}
 			break;
 
 		case "deposit":
-
-			bankInterface.deposit(Integer.parseInt(args[3]), Integer.parseInt(args[4]), sessionID);
+			if(sessionID !=0)
+			{
+				bankInterface.deposit(Integer.parseInt(args[3]), Integer.parseInt(args[4]), sessionID);
+			}
+			else
+			{	
+				throw new InvalidSession();
+			}
 			break;
 
 		case "withdraw":
-			bankInterface.withdraw(Integer.parseInt(args[3]), Integer.parseInt(args[4]), sessionID);
+			if(sessionID !=0)
+			{
+				bankInterface.withdraw(Integer.parseInt(args[3]), Integer.parseInt(args[4]), sessionID);
+			}
+			else
+			{	
+				throw new InvalidSession();
+			}
 			break;
 
 		case "statement":
 
-			DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-			Date from = dateFormat.parse(args[4]);
-			Date to = dateFormat.parse(args[5]);
+			if(sessionID !=0)
+			{
+				DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+				Date from = dateFormat.parse(args[4]);
+				Date to = dateFormat.parse(args[5]);
 
-			bankInterface.getStatement(Integer.parseInt(args[3]), from, to, sessionID);
+				bankInterface.getStatement(Integer.parseInt(args[3]), from, to, sessionID);	
+			}
+			else
+			{	
+				throw new InvalidSession();
+			}
+			
 			break;
 
 		}

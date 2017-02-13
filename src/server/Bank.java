@@ -38,6 +38,7 @@ public class Bank extends UnicastRemoteObject implements IBank {
 	private List<Account> accounts; // users accounts
 	private Map<String,String> userDetails;
 	private static int serverPort;
+	
 
 	public Bank() throws RemoteException
 	{
@@ -84,14 +85,24 @@ public class Bank extends UnicastRemoteObject implements IBank {
 		{
 			if(userDetails.containsValue(password))
 			{
-				long min = 0; //assign lower range value
+				long min = 1; //assign lower range value
 				long max = 1000000; //assign upper range value
 				Random random = new Random();
 
 
 				sesID = min + (long)(random.nextDouble()*(max - min));
-
+				
+				
+				System.out.println("Logged In Successfully!");
 			}
+			else
+			{
+				System.out.println("Invalid Username or Password!");
+			}
+		}
+		else
+		{
+			System.out.println("Invalid Username or Password!");
 		}
 		return sesID;
 	}
@@ -114,7 +125,8 @@ public class Bank extends UnicastRemoteObject implements IBank {
 				Transaction dep = new Transaction(TransactionType.Deposit, amount, todayDate);
 				acc.setBalance(acc.getBalance()+amount);
 				acc.addTransaction(dep);
-				System.out.println(dep.toString());
+				System.out.println("Sucessfully Deposited: "+dep.toString());
+				System.out.println("Balance: "+acc.getBalance());
 				break;
 			}
 
@@ -140,6 +152,8 @@ public class Bank extends UnicastRemoteObject implements IBank {
 				Transaction wit = new Transaction(TransactionType.Withdrawal, amount, todayDate);
 				acc.setBalance(acc.getBalance()-amount);
 				acc.addTransaction(wit);
+				System.out.println("Sucessfully Withdrew: "+amount);
+				System.out.println("Balance: "+acc.getBalance());
 				break;
 			}
 		}
@@ -171,7 +185,7 @@ public class Bank extends UnicastRemoteObject implements IBank {
 			if(a.getAccountNum() == accnum)
 			{
 				s = new Statement(a,from,to);
-
+				System.out.println("Bank Statement For Account: "+a.getAccountNum() +" From: "+from.toString() +" To: "+ to.toString());
 				for(Transaction t :s.getTransactionsForPeriod(from, to))
 				{
 					System.out.println(t.toString());
