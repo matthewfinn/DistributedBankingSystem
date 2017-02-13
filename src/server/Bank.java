@@ -47,11 +47,28 @@ public class Bank extends UnicastRemoteObject implements IBank {
 		/**
 		 * Adding new user accounts to the bank upon construction and Bank (Server) obj.
 		 */
-		this.accounts.add(new Account(1, 100.00,"Matthew"));
-		this.accounts.add(new Account(2, 200.00,"Shane"));
-		this.accounts.add(new Account(3, 300.00,"Mark"));
-		this.accounts.add(new Account(4, 400.00,"Luke"));
-		this.accounts.add(new Account(5, 500.00,"Joe"));
+		Account a1 = new Account(1, 100.00,"Matthew");
+		Account a2 = new Account(2, 200.00,"Shane");
+		Account a3 = new Account(3, 300.00,"Mark");
+		Account a4 = new Account(4, 400.00,"Luke");
+		Account a5 =new Account(5, 500.00,"Joe");
+		//Adding transctions to accounts
+		a1.addTransaction(new Transaction(TransactionType.Deposit,200.0,new Date()));
+		a1.addTransaction(new Transaction(TransactionType.Withdrawal,10.0,new Date()));
+		a2.addTransaction(new Transaction(TransactionType.Deposit,200.0,new Date()));
+		a2.addTransaction(new Transaction(TransactionType.Withdrawal,10.0,new Date()));
+		a3.addTransaction(new Transaction(TransactionType.Deposit,200.0,new Date()));
+		a3.addTransaction(new Transaction(TransactionType.Withdrawal,10.0,new Date()));
+		a4.addTransaction(new Transaction(TransactionType.Deposit,200.0,new Date()));
+		a4.addTransaction(new Transaction(TransactionType.Withdrawal,10.0,new Date()));
+		a5.addTransaction(new Transaction(TransactionType.Deposit,200.0,new Date()));
+		a5.addTransaction(new Transaction(TransactionType.Withdrawal,10.0,new Date()));
+		
+		this.accounts.add(a1);
+		this.accounts.add(a2);
+		this.accounts.add(a3);
+		this.accounts.add(a4);
+		this.accounts.add(a5);
 		userDetails.put("username", "password");
 
 	}
@@ -108,9 +125,9 @@ public class Bank extends UnicastRemoteObject implements IBank {
 	}
 
 	@Override
-	public void deposit(int accnum, int amount, long sessionID) throws RemoteException, InvalidSession {
+	public double deposit(int accnum, int amount, long sessionID) throws RemoteException, InvalidSession {
 
-		Account acc ;
+		Account acc =null;
 
 		for(Account a : accounts){
 
@@ -127,15 +144,16 @@ public class Bank extends UnicastRemoteObject implements IBank {
 				acc.addTransaction(dep);
 				System.out.println("Sucessfully Deposited: "+dep.toString());
 				System.out.println("Balance: "+acc.getBalance());
-				break;
+				return acc.getBalance();
 			}
-
+			
 		}
+		return acc.getBalance();
 
 	}
 	@Override
-	public void withdraw(int accnum, int amount, long sessionID) throws RemoteException, InvalidSession {
-		Account acc;
+	public double withdraw(int accnum, int amount, long sessionID) throws RemoteException, InvalidSession {
+		Account acc=null;
 
 		for(Account a : accounts){
 
@@ -154,26 +172,26 @@ public class Bank extends UnicastRemoteObject implements IBank {
 				acc.addTransaction(wit);
 				System.out.println("Sucessfully Withdrew: "+amount);
 				System.out.println("Balance: "+acc.getBalance());
-				break;
+				return acc.getBalance();
 			}
 		}
-
+		return acc.getBalance();
 	}
 	@Override
-	public int inquiry(int accnum, long sessionID) throws RemoteException, InvalidSession {
-		Account acc;
+	public double inquiry(int accnum, long sessionID) throws RemoteException, InvalidSession {
+		Account acc=null;
 
 		for(Account a : accounts){
 
 			if(a.getAccountNum() == accnum){
 
 				acc = a;
-				System.out.println("Balance for account number" + acc.getAccountNum()+" is €"+acc.getBalance());
-				break;
+				System.out.println("Balance for account number" + acc.getAccountNum()+" is: "+acc.getBalance());
+				return acc.getBalance();
 			}
 		}
 
-		return 0;
+		return acc.getBalance();
 	}
 	@Override
 	public Statement getStatement(int accnum, Date from, Date to, long sessionID) throws RemoteException, InvalidSession {

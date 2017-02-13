@@ -23,6 +23,8 @@ import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import business.Transaction;
+import server.Statement;
 import interfaces.IBank;
 import interfaces.IBank.InvalidLogin;
 import interfaces.IBank.InvalidSession;
@@ -108,7 +110,7 @@ public class ATM
 						sessionID =0;
 					}
 				}, 5*60*1000);
-
+				System.out.println("Sucessfully Logged In!");
 			}
 			else
 			{
@@ -125,8 +127,8 @@ public class ATM
 				System.out.println("Enter Account Number:");
 				int accnum = scan.nextInt();
 
-				bankInterface.inquiry(accnum, sessionID);
-
+				double bal=bankInterface.inquiry(accnum, sessionID);
+				System.out.println("Balance is: "+bal);
 				System.out.println("-------------------------------------------------\n");
 
 			}
@@ -141,12 +143,13 @@ public class ATM
 			if(sessionID !=0)
 			{
 
-				System.out.println("Enter Account Number:");
+				System.out.println("Enter Account Number: ");
 				int accnum = scan.nextInt();
-				System.out.println("Enter Amount To Deposit : €");
+				System.out.println("Enter Amount To Deposit: ");
 				int amt = scan.nextInt();
-				bankInterface.deposit(accnum, amt,  sessionID);
-
+				double bal=bankInterface.deposit(accnum, amt,  sessionID);
+				System.out.println("Successfully Deposited: "+amt +" to Account: "+accnum);
+				System.out.println("Balance is: "+bal);
 				System.out.println("-------------------------------------------------\n");
 
 			}
@@ -164,8 +167,9 @@ public class ATM
 				int accnum = scan.nextInt();
 				System.out.println("Enter Amount To Withdraw : €");
 				int amt = scan.nextInt();
-				bankInterface.withdraw(accnum, amt, sessionID);
-
+				double bal=bankInterface.withdraw(accnum, amt, sessionID);
+				System.out.println("Successfully Withdrew: "+amt +" from Account: "+accnum);
+				System.out.println("Balance is: "+bal);
 				System.out.println("-------------------------------------------------\n");
 
 			}
@@ -189,9 +193,11 @@ public class ATM
 				DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 				Date from = dateFormat.parse(f);
 				Date to = dateFormat.parse(t);
-
-				bankInterface.getStatement(accnum, from, to, sessionID);
-
+				Statement s=bankInterface.getStatement(accnum, from, to, sessionID);
+				for(Transaction tr:s.getTransactionsForPeriod(from, to))
+				{
+					System.out.println(tr.toString());
+				}
 				System.out.println("-------------------------------------------------\n");
 
 			}
