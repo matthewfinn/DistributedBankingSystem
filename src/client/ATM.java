@@ -101,7 +101,7 @@ public class ATM
 			{	
 				throw new InvalidSession();
 			}
-			break;
+			
 
 		case "deposit":
 			if(sessionID !=0)
@@ -112,7 +112,7 @@ public class ATM
 			{	
 				throw new InvalidSession();
 			}
-			break;
+			
 
 		case "withdraw":
 			if(sessionID !=0)
@@ -123,7 +123,7 @@ public class ATM
 			{	
 				throw new InvalidSession();
 			}
-			break;
+			
 
 		case "statement":
 
@@ -140,7 +140,7 @@ public class ATM
 				throw new InvalidSession();
 			}
 			
-			break;
+			
 
 		}
 
