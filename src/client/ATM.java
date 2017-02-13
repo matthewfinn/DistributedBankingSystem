@@ -91,7 +91,6 @@ public class ATM
 				throw new InvalidLogin();
 			}
 			
-			break;
 
 		case "inquiry":
 			if(sessionID !=0)
