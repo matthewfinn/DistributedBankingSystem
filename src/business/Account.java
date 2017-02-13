@@ -13,10 +13,11 @@
 
 package business;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Account
+public class Account implements Serializable
 {
 
 	private int accountNum;
@@ -43,7 +44,7 @@ public class Account
 	public double getBalance() {
 		return balance;
 	}
-	
+
 	public String getAccountName() {
 		return accountName;
 	}

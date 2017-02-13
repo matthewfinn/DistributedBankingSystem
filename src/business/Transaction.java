@@ -28,7 +28,7 @@ public class Transaction implements Serializable{
 		Deposit,
 		Withdrawal
 	}
-	
+
 	public Transaction (TransactionType t, double amt, Date dt)
 	{
 		this.type = t;
@@ -38,7 +38,7 @@ public class Transaction implements Serializable{
 
 	@Override
 	public String toString(){
-		return "Transaction: "+ this.type + this.amount + this.date;
+		return "Transaction: " + this.type + " €" + this.amount + "  " + this.date;
 
 	}
 

@@ -24,10 +24,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import business.Transaction;
-import server.Statement;
 import interfaces.IBank;
 import interfaces.IBank.InvalidLogin;
 import interfaces.IBank.InvalidSession;
+import server.Statement;
 
 public class ATM
 {
@@ -85,17 +85,22 @@ public class ATM
 		System.out.println("Exit \n");
 
 		Scanner scan = new Scanner(System.in);
+		System.out.print("Choice: ");
 		String choice = scan.nextLine().toLowerCase();
+		System.out.println("\n-------------------------------------------------");
 
 		switch (choice)
 		{
 
 		case "login":
+			System.out.println("LOGIN");
 
 			System.out.println("Enter the username:");
 			String un = scan.nextLine();
+
 			System.out.println("Enter the password:");
 			String pw = scan.nextLine();
+
 			sessionID=bankInterface.login(un, pw);
 
 			if(sessionID != 0)
@@ -123,11 +128,13 @@ public class ATM
 		case "inquiry":
 			if(sessionID !=0)
 			{
+				System.out.println("INQUIRY");
 
 				System.out.println("Enter Account Number:");
 				int accnum = scan.nextInt();
 
 				double bal=bankInterface.inquiry(accnum, sessionID);
+
 				System.out.println("Balance is: "+bal);
 				System.out.println("-------------------------------------------------\n");
 
@@ -142,12 +149,16 @@ public class ATM
 		case "deposit":
 			if(sessionID !=0)
 			{
+				System.out.println("DEPOSIT");
 
 				System.out.println("Enter Account Number: ");
 				int accnum = scan.nextInt();
+
 				System.out.println("Enter Amount To Deposit: ");
 				int amt = scan.nextInt();
+
 				double bal=bankInterface.deposit(accnum, amt,  sessionID);
+
 				System.out.println("Successfully Deposited: "+amt +" to Account: "+accnum);
 				System.out.println("Balance is: "+bal);
 				System.out.println("-------------------------------------------------\n");
@@ -163,11 +174,16 @@ public class ATM
 		case "withdraw":
 			if(sessionID !=0)
 			{
+				System.out.println("WITHDRAW");
+
 				System.out.println("Enter Account Number:");
 				int accnum = scan.nextInt();
+
 				System.out.println("Enter Amount To Withdraw : €");
 				int amt = scan.nextInt();
+
 				double bal=bankInterface.withdraw(accnum, amt, sessionID);
+
 				System.out.println("Successfully Withdrew: "+amt +" from Account: "+accnum);
 				System.out.println("Balance is: "+bal);
 				System.out.println("-------------------------------------------------\n");
@@ -184,16 +200,24 @@ public class ATM
 
 			if(sessionID !=0)
 			{
+				System.out.println("STATEMENT");
+
 				System.out.println("Enter Account Number:");
 				int accnum = scan.nextInt();
-				System.out.println("Enter Start Date:");
-				String f = scan.nextLine();
-				System.out.println("Enter End Date:");
-				String t = scan.nextLine();
+
+				System.out.println("Enter Start Date (dd/mm/yyyy):");
+				String f = scan.next();
+
+				System.out.println("Enter End Date (dd/mm/yyyy):");
+				String t = scan.next();
+
 				DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 				Date from = dateFormat.parse(f);
 				Date to = dateFormat.parse(t);
-				Statement s=bankInterface.getStatement(accnum, from, to, sessionID);
+
+				Statement s = bankInterface.getStatement(accnum, from, to, sessionID);
+
+				System.out.println("Statement for account number"+accnum+" from "+ from.toString()+" to "+ to.toString()+"\n");
 				for(Transaction tr:s.getTransactionsForPeriod(from, to))
 				{
 					System.out.println(tr.toString());
