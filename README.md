@@ -8,7 +8,7 @@ Steps to use:
 
 3. Run RMIRegistry on port of choice: "rmiregistry 7777 &"
 
-4. Run Bank Server : java src/Bank 7777
+4. Run Bank Server : java server/Bank 7777
 
 5. Open New (2nd) Command Window & Navigate to source dir : "cd Documents/workspace/DistributedBankingSystem/src/
 
