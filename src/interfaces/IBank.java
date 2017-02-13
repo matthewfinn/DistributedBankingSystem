@@ -33,13 +33,27 @@ public interface IBank extends Remote {
 
 	class InvalidLogin extends Exception{
 
-		public InvalidLogin(){};
-
+		private String message ="Error, Invalid Login Details Provided";
+		public InvalidLogin(){
+			
+			System.out.println(this.message);
+		};
+		public String getMessage()
+		{
+			return this.message;
+		}
 	};
 
 	class InvalidSession extends Exception{
 
-		public InvalidSession(){};
+		private String message ="Error, Session Is Invalid Or Has Expired";
+		public InvalidSession(){
+			System.out.println(this.message);
+		};
+		public String getMessage()
+		{
+			return this.message;
+		}
 
 	};
 
