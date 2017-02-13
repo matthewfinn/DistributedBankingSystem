@@ -34,6 +34,7 @@ public class ATM
 	private static IBank bankInterface;
 	private static long sessionID;
 	private static Timer sessionTimer;
+	private static boolean isRunning;
 	public static void main (String args[]) throws Exception
 	{
 
@@ -47,9 +48,10 @@ public class ATM
 		{
 			Registry registry = LocateRegistry.getRegistry(serverAddress, serverPort);
 			bankInterface = (IBank) registry.lookup("Bank");
-			while(true){
+			isRunning=true;
+			do{
 				MenuSwitcher(args);
-			}
+			}while(isRunning);
 			//Naming.rebind("IBank", bankInterface);
 
 		}catch(Exception e)
@@ -143,19 +145,25 @@ public class ATM
 				Date to = dateFormat.parse(args[5]);
 
 				bankInterface.getStatement(Integer.parseInt(args[3]), from, to, sessionID);
-				MenuSwitcher(args);
 			}
 			else
 			{
 				throw new InvalidSession();
 			}
 			break;
+			
+		case "exit":
 
-
-
+			if(sessionID !=0)
+			{
+				sessionID =0;
+				isRunning =false;		
+			}
+			else
+			{
+				throw new InvalidSession();
+			}
+			break;
 		}
-
-
-
 	}
 }
