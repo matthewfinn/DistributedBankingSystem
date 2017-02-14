@@ -10,7 +10,6 @@
  * ID: 13480362
  *
  */
-
 package server;
 
 import java.rmi.RemoteException;
@@ -30,14 +29,12 @@ import business.Transaction;
 import business.Transaction.TransactionType;
 import interfaces.IBank;
 
-
 public class Bank extends UnicastRemoteObject implements IBank {
 
 	private static final long serialVersionUID = 1L;
 	private List<Account> accounts; /* List to store user account objects */
 	private Map<String,String> userDetails; /* Map to store user login details*/
 	private static int serverPort; /* Integer value to store port number on which to run ther server */
-
 
 	public Bank() throws RemoteException
 	{
@@ -98,8 +95,6 @@ public class Bank extends UnicastRemoteObject implements IBank {
 		}
 	}
 
-
-
 	@Override
 	public long login(String username, String password) throws RemoteException, InvalidLogin {
 
@@ -113,10 +108,8 @@ public class Bank extends UnicastRemoteObject implements IBank {
 				long max = 1000000; //assign upper range value
 				Random random = new Random();
 
-
 				/* Initialises Session ID if user enters correct login details */
 				sesID = min + (long)(random.nextDouble()*(max - min));
-
 
 				System.out.println("Logged In Successfully!");
 			}
@@ -136,7 +129,6 @@ public class Bank extends UnicastRemoteObject implements IBank {
 	public double deposit(int accnum, int amount, long sessionID) throws RemoteException, InvalidSession {
 
 		Account acc =null;
-
 		for(Account a : accounts){
 
 			if(a.getAccountNum() == accnum){
@@ -160,7 +152,6 @@ public class Bank extends UnicastRemoteObject implements IBank {
 			}
 		}
 		return acc.getBalance();
-
 	}
 	@Override
 	public double withdraw(int accnum, int amount, long sessionID) throws RemoteException, InvalidSession {

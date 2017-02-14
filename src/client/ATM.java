@@ -30,7 +30,6 @@ import server.Statement;
 
 public class ATM
 {
-
 	private static String serverAddress;
 	private static int serverPort;
 	private static IBank bankInterface;
@@ -61,7 +60,6 @@ public class ATM
 			e.printStackTrace();
 		}
 	}
-
 
 	private static void MenuSwitcher() throws NumberFormatException, RemoteException, InvalidSession, ParseException, InvalidLogin
 	{
@@ -116,7 +114,6 @@ public class ATM
 			}
 			break;
 
-
 		case "inquiry":
 			if(sessionID !=0)
 			{
@@ -129,8 +126,6 @@ public class ATM
 
 				System.out.println("Balance is: "+bal);
 				System.out.println("-------------------------------------------------\n");
-
-
 			}
 			else
 			{
@@ -138,7 +133,6 @@ public class ATM
 				throw new InvalidSession();
 			}
 			break;
-
 
 		case "deposit":
 			if(sessionID !=0)
@@ -191,7 +185,6 @@ public class ATM
 			}
 			break;
 
-
 		case "statement":
 
 			if(sessionID !=0)
@@ -241,11 +234,8 @@ public class ATM
 			{
 				scan.close();
 				throw new InvalidSession();
-
 			}
 			break;
-
-
 		}
 	}
 }

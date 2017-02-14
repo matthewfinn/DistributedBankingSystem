@@ -70,7 +70,6 @@ public class Statement implements IStatement, Serializable {
 
 		for (Transaction t: this.getTransactions())
 		{
-
 			//adds transaction to list if its between 2 dates specified
 			if(t.getDate().after(from)&& t.getDate().before(to))
 			{

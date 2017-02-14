@@ -25,21 +25,17 @@ public class Account implements Serializable
 	private String accountName;
 	private List<Transaction> transactions;
 
-
 	public Account(int acm, double bal,String accName)
 	{
-
 		this.accountNum = acm;
 		this.balance = bal;
 		this.accountName = accName;
 		this.transactions = new ArrayList<Transaction>();
 	}
 
-
 	public int getAccountNum() {
 		return accountNum;
 	}
-
 
 	public double getBalance() {
 		return balance;
@@ -49,11 +45,9 @@ public class Account implements Serializable
 		return accountName;
 	}
 
-
 	public List<Transaction> getTransactions() {
 		return transactions;
 	}
-
 
 	public void addTransaction (Transaction tr){
 
