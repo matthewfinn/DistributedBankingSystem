@@ -33,11 +33,16 @@ public interface IBank extends Remote {
 
 	class InvalidLogin extends Exception{
 
+		/**
+		 *
+		 */
+		private static final long serialVersionUID = 1L;
 		private String message ="Error, Invalid Login Details Provided";
 		public InvalidLogin(){
-			
+
 			System.out.println(this.message);
 		};
+		@Override
 		public String getMessage()
 		{
 			return this.message;
@@ -46,10 +51,12 @@ public interface IBank extends Remote {
 
 	class InvalidSession extends Exception{
 
+		private static final long serialVersionUID = 1L;
 		private String message ="Error, Session Is Invalid Or Has Expired";
 		public InvalidSession(){
 			System.out.println(this.message);
 		};
+		@Override
 		public String getMessage()
 		{
 			return this.message;

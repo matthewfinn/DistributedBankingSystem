@@ -10,7 +10,6 @@
  * ID: 13480362
  *
  */
-//howya
 package client;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -55,20 +54,12 @@ public class ATM
 			do{
 				MenuSwitcher();
 			}while(isRunning);
-			//Naming.rebind("IBank", bankInterface);
 
 		}catch(Exception e)
 		{
-
 			System.err.println("Client exception: " + e.toString());
 			e.printStackTrace();
 		}
-
-		//		for (int i=0; i < args.length; i++){
-		//			System.out.println(args[i].toString());
-		//		}
-
-
 	}
 
 
@@ -119,6 +110,7 @@ public class ATM
 			}
 			else
 			{
+				scan.close();
 				throw new InvalidLogin();
 
 			}
@@ -141,6 +133,7 @@ public class ATM
 			}
 			else
 			{
+				scan.close();
 				throw new InvalidSession();
 			}
 			break;
@@ -166,6 +159,7 @@ public class ATM
 			}
 			else
 			{
+				scan.close();
 				throw new InvalidSession();
 			}
 			break;
@@ -191,6 +185,7 @@ public class ATM
 			}
 			else
 			{
+				scan.close();
 				throw new InvalidSession();
 			}
 			break;
@@ -222,11 +217,13 @@ public class ATM
 				{
 					System.out.println(tr.toString());
 				}
+				System.out.println("Balance: €"+bankInterface.inquiry(accnum, sessionID));
 				System.out.println("-------------------------------------------------\n");
 
 			}
 			else
 			{
+				scan.close();
 				throw new InvalidSession();
 			}
 			break;
@@ -237,12 +234,17 @@ public class ATM
 			{
 				sessionID =0;
 				isRunning =false;
+				scan.close();
 			}
 			else
 			{
+				scan.close();
 				throw new InvalidSession();
+
 			}
 			break;
+
+
 		}
 	}
 }

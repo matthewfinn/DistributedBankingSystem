@@ -19,7 +19,7 @@ import java.util.List;
 
 public class Account implements Serializable
 {
-
+	private static final long serialVersionUID = 1L;
 	private int accountNum;
 	private double balance;
 	private String accountName;

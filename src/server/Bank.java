@@ -13,8 +13,6 @@
 
 package server;
 
-import java.net.URL;
-import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -35,16 +33,18 @@ import interfaces.IBank;
 
 public class Bank extends UnicastRemoteObject implements IBank {
 
-	private List<Account> accounts; // users accounts
-	private Map<String,String> userDetails;
-	private static int serverPort;
-	
+	private static final long serialVersionUID = 1L;
+	private List<Account> accounts; /* List to store user account objects */
+	private Map<String,String> userDetails; /* Map to store user login details*/
+	private static int serverPort; /* Integer value to store port number on which to run ther server */
+
 
 	public Bank() throws RemoteException
 	{
 		userDetails= new HashMap<String, String>();
 		this.accounts = new ArrayList<Account>();
-		/**
+
+		/*
 		 * Adding new user accounts to the bank upon construction and Bank (Server) obj.
 		 */
 		Account a1 = new Account(1, 100.00,"Matthew");
@@ -52,40 +52,47 @@ public class Bank extends UnicastRemoteObject implements IBank {
 		Account a3 = new Account(3, 300.00,"Mark");
 		Account a4 = new Account(4, 400.00,"Luke");
 		Account a5 =new Account(5, 500.00,"Joe");
-		//Adding transctions to accounts
+
+		/*
+		 * Adding transctions to account 1 for testing purposes
+		 */
 		a1.addTransaction(new Transaction(TransactionType.Deposit,200.0,new Date()));
+		a1.setBalance(a1.getBalance()+200.0);
 		a1.addTransaction(new Transaction(TransactionType.Withdrawal,10.0,new Date()));
-		a2.addTransaction(new Transaction(TransactionType.Deposit,200.0,new Date()));
-		a2.addTransaction(new Transaction(TransactionType.Withdrawal,10.0,new Date()));
-		a3.addTransaction(new Transaction(TransactionType.Deposit,200.0,new Date()));
-		a3.addTransaction(new Transaction(TransactionType.Withdrawal,10.0,new Date()));
-		a4.addTransaction(new Transaction(TransactionType.Deposit,200.0,new Date()));
-		a4.addTransaction(new Transaction(TransactionType.Withdrawal,10.0,new Date()));
-		a5.addTransaction(new Transaction(TransactionType.Deposit,200.0,new Date()));
-		a5.addTransaction(new Transaction(TransactionType.Withdrawal,10.0,new Date()));
-		
+		a1.setBalance(a1.getBalance()-10.0);
+
+		/*
+		 * Adding accounts to list of accounts
+		 */
 		this.accounts.add(a1);
 		this.accounts.add(a2);
 		this.accounts.add(a3);
 		this.accounts.add(a4);
 		this.accounts.add(a5);
+
+		/*
+		 * Setting user login details
+		 */
 		userDetails.put("username", "password");
 
 	}
 
 	public static void main(String args[]) throws Exception
 	{
-		//Reads in port number parameter from cmd
+		/*
+		 * Reads in port number parameter from cmd
+		 */
 		serverPort = Integer.parseInt(args[0]);
 		try
 		{
-			Bank bank = new Bank();// initialise Bank server
-			Registry registry = LocateRegistry.getRegistry(serverPort);
-			registry.bind("Bank", bank);		
+			Bank bank = new Bank(); /* initialise Bank server */
+			Registry registry = LocateRegistry.getRegistry(serverPort); /* Initialises registry */
+			registry.bind("Bank", bank); /* Binds bank to registry */
 			System.out.println("Server ready");
 		}
 		catch(Exception e )
 		{
+			/* Exception thrown if bank server cannot be started */
 			System.out.println("Error Initialising Bank Server:" +e.getMessage());
 			e.printStackTrace();
 		}
@@ -107,9 +114,10 @@ public class Bank extends UnicastRemoteObject implements IBank {
 				Random random = new Random();
 
 
+				/* Initialises Session ID if user enters correct login details */
 				sesID = min + (long)(random.nextDouble()*(max - min));
-				
-				
+
+
 				System.out.println("Logged In Successfully!");
 			}
 			else
@@ -136,17 +144,21 @@ public class Bank extends UnicastRemoteObject implements IBank {
 				acc = a;
 
 				Calendar today = Calendar.getInstance();
-				today.clear(Calendar.HOUR); today.clear(Calendar.MINUTE); today.clear(Calendar.SECOND);
-				Date todayDate = today.getTime();
+				Date todayDate = today.getTime(); /* Gets todays date at current time */
 
+				/* Creates transaction */
 				Transaction dep = new Transaction(TransactionType.Deposit, amount, todayDate);
-				acc.setBalance(acc.getBalance()+amount);
+
+				/* Adjusts account balance */
+				acc.setBalance( acc.getBalance() + amount);
+
+				/* Adds new transaction to account */
 				acc.addTransaction(dep);
+
 				System.out.println("Sucessfully Deposited: "+dep.toString());
 				System.out.println("Balance: "+acc.getBalance());
-				return acc.getBalance();
 			}
-			
+
 		}
 		return acc.getBalance();
 
@@ -163,16 +175,13 @@ public class Bank extends UnicastRemoteObject implements IBank {
 
 				//Gets todays date
 				Calendar today = Calendar.getInstance();
-				today.clear(Calendar.HOUR); today.clear(Calendar.MINUTE); today.clear(Calendar.SECOND);
 				Date todayDate = today.getTime();
-
 
 				Transaction wit = new Transaction(TransactionType.Withdrawal, amount, todayDate);
 				acc.setBalance(acc.getBalance()-amount);
 				acc.addTransaction(wit);
 				System.out.println("Sucessfully Withdrew: "+amount);
 				System.out.println("Balance: "+acc.getBalance());
-				return acc.getBalance();
 			}
 		}
 		return acc.getBalance();
@@ -187,7 +196,6 @@ public class Bank extends UnicastRemoteObject implements IBank {
 
 				acc = a;
 				System.out.println("Balance for account number" + acc.getAccountNum()+" is: "+acc.getBalance());
-				return acc.getBalance();
 			}
 		}
 
