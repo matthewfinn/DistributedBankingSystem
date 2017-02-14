@@ -57,9 +57,6 @@ public class Account implements Serializable
 
 	public void addTransaction (Transaction tr){
 
-		/**
-		 * CREATE NEW TRANSACTION HERE... MODIFY METHOD PARAMS TO SUIT...
-		 */
 		transactions.add(tr);
 	}
 

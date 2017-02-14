@@ -33,9 +33,6 @@ public interface IBank extends Remote {
 
 	class InvalidLogin extends Exception{
 
-		/**
-		 *
-		 */
 		private static final long serialVersionUID = 1L;
 		private String message ="Error, Invalid Login Details Provided";
 		public InvalidLogin(){

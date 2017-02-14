@@ -125,10 +125,11 @@ public class ATM
 				System.out.println("Enter Account Number:");
 				int accnum = scan.nextInt();
 
-				double bal=bankInterface.inquiry(accnum, sessionID);
+				double bal = bankInterface.inquiry(accnum, sessionID);
 
 				System.out.println("Balance is: "+bal);
 				System.out.println("-------------------------------------------------\n");
+
 
 			}
 			else

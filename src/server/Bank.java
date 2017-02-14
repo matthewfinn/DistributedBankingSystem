@@ -158,7 +158,6 @@ public class Bank extends UnicastRemoteObject implements IBank {
 				System.out.println("Sucessfully Deposited: "+dep.toString());
 				System.out.println("Balance: "+acc.getBalance());
 			}
-
 		}
 		return acc.getBalance();
 
@@ -177,9 +176,13 @@ public class Bank extends UnicastRemoteObject implements IBank {
 				Calendar today = Calendar.getInstance();
 				Date todayDate = today.getTime();
 
+				// creates new transaction
 				Transaction wit = new Transaction(TransactionType.Withdrawal, amount, todayDate);
+
+				// adjusts account balance & adds transaction to account
 				acc.setBalance(acc.getBalance()-amount);
 				acc.addTransaction(wit);
+
 				System.out.println("Sucessfully Withdrew: "+amount);
 				System.out.println("Balance: "+acc.getBalance());
 			}
@@ -188,9 +191,10 @@ public class Bank extends UnicastRemoteObject implements IBank {
 	}
 	@Override
 	public double inquiry(int accnum, long sessionID) throws RemoteException, InvalidSession {
-		Account acc=null;
 
-		for(Account a : accounts){
+		Account acc = null;
+
+		for(Account a : accounts){ //Search accounts to fine one that matches number
 
 			if(a.getAccountNum() == accnum){
 
@@ -198,7 +202,6 @@ public class Bank extends UnicastRemoteObject implements IBank {
 				System.out.println("Balance for account number" + acc.getAccountNum()+" is: "+acc.getBalance());
 			}
 		}
-
 		return acc.getBalance();
 	}
 	@Override
@@ -211,7 +214,10 @@ public class Bank extends UnicastRemoteObject implements IBank {
 			if(a.getAccountNum() == accnum)
 			{
 				s = new Statement(a,from,to);
+
 				System.out.println("Bank Statement For Account: "+a.getAccountNum() +" From: "+from.toString() +" To: "+ to.toString());
+
+				//prints each transaction in new statement
 				for(Transaction t :s.getTransactionsForPeriod(from, to))
 				{
 					System.out.println(t.toString());

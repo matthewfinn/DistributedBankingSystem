@@ -24,6 +24,7 @@ import interfaces.IStatement;
 
 public class Statement implements IStatement, Serializable {
 
+	private static final long serialVersionUID = 1L;
 	private Account account;
 	private Date startDate;
 	private Date endDate;
@@ -39,32 +40,26 @@ public class Statement implements IStatement, Serializable {
 
 	@Override
 	public int getAccountnum() {
-		// TODO Auto-generated method stub
 		return account.getAccountNum();
 	}
 
 	@Override
 	public Date getStartDate() {
-		// TODO Auto-generated method stub
 		return this.startDate;
 	}
 
 	@Override
 	public Date getEndDate() {
-		// TODO Auto-generated method stub
-
 		return this.endDate;
 	}
 
 	@Override
 	public String getAccoutName() {
-		// TODO Auto-generated method stub
 		return account.getAccountName();
 	}
 
 	@Override
 	public List<Transaction> getTransactions() {
-		// TODO Auto-generated method stub
 		return account.getTransactions();
 	}
 
@@ -76,6 +71,7 @@ public class Statement implements IStatement, Serializable {
 		for (Transaction t: this.getTransactions())
 		{
 
+			//adds transaction to list if its between 2 dates specified
 			if(t.getDate().after(from)&& t.getDate().before(to))
 			{
 				transactionsForPeriod.add(t);
